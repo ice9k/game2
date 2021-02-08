@@ -1,4 +1,4 @@
-const config = require('startupjs/bundler/metro.config.cjs')
+const config = require('startupjs/bundler.cjs').metroConfig
 
 // Override default metro config here.
 

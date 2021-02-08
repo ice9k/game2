@@ -1,8 +1,10 @@
 import React from 'react'
-import { observer, emit, useValue, useLocal } from 'startupjs'
+import { observer, emit, useValue, useLocal, useSession} from 'startupjs'
 import './index.styl'
 import { Row, Div, Layout, SmartSidebar, Menu, Button, H1 } from '@startupjs/ui'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { RoleSelect } from 'components'
+import { LogoutButton } from '@startupjs/auth'
 import APP from '../../app.json'
 
 const { displayName } = APP
@@ -21,14 +23,22 @@ const MenuItem = observer(({ url, children }) => {
 
 export default observer(function ({ children }) {
   const [opened, $opened] = useValue(false)
+  const [loggedIn] = useSession('loggedIn')
+  const [role] = useSession('user.role')
 
   function renderSidebar () {
     return pug`
-      Menu.sidebar-menu
-        MenuItem(url='/') App
-        MenuItem(url='/about') About
+      Menu.sidebar
+        MenuItem(url='/') Games
+        MenuItem(url='/past-games') Past games
+        if role === 'professor'
+          MenuItem(url='/library') Library
+        LogoutButton
     `
   }
+  if (!loggedIn) emit('url', '/auth/sign-in')
+
+  if (!role) return pug`RoleSelect`
 
   return pug`
     Layout

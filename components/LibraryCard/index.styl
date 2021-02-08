@@ -1,0 +1,40 @@
+$cardBackground = $UI.colors.white
+
+.root
+  height 216px
+  background-color $cardBackground
+  border-radius 4px
+  flex-basis 300px
+  overflow hidden
+
+  +to($UI.media.mobile)
+    flex-grow 1
+
+.header
+  height 4.5u
+  padding 0 2u
+
+.headerText
+  font(s)
+
+.content
+  margin-top 2u
+  padding 0 2u
+  flex-grow 1
+
+.levelName
+.name
+  font(xl)
+
+.name
+  margin-top 1u
+
+.description
+  margin-top 2u
+
+.footer
+  margin-top 1u
+  padding 0 2u 2u 2u
+  z-index 99
+
+
