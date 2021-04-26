@@ -5,6 +5,9 @@ import React from 'react'
 import App from 'startupjs/app'
 import { observer, model } from 'startupjs'
 import { Platform } from 'react-native'
+import { initAuthApp } from '@startupjs/auth'
+import * as localForms from '@startupjs/auth-local'
+
 
 // Frontend micro-services
 import * as main from '../main'
@@ -17,10 +20,14 @@ if (Platform.OS === 'web') window.model = model
 // Initialization must start before doing any subscribes to data.
 init({ baseUrl: BASE_URL, orm })
 
+const auth = initAuthApp({
+  localForms,
+})
+
 export default observer(() => {
   return pug`
     App(
-      apps={main}
+      apps={main, auth}
     )
   `
 })

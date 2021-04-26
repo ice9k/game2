@@ -1,8 +1,10 @@
 import React from 'react'
-import { observer, emit, useValue, useLocal } from 'startupjs'
+import { observer, emit, useValue, useLocal, useSession } from 'startupjs'
 import './index.styl'
 import { Row, Div, Layout, SmartSidebar, Menu, Button, H1 } from '@startupjs/ui'
+import { LogoutButton } from '@startupjs/auth'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { RoleSelect } from 'components'
 import APP from '../../app.json'
 
 const { displayName } = APP
@@ -21,25 +23,34 @@ const MenuItem = observer(({ url, children }) => {
 
 export default observer(function ({ children }) {
   const [opened, $opened] = useValue(false)
+  const [loggedIn] = useSession('loggedIn')
+  const [role] = useSession('user.role')
 
   function renderSidebar () {
     return pug`
-      Menu.sidebar-menu
-        MenuItem(url='/') App
-        MenuItem(url='/about') About
+      Menu.sidebar
+        MenuItem(url='/') Games
+        MenuItem(url='/past-games') Past games
+        if role === 'professor'
+          MenuItem(url='/library') Library
+        LogoutButton
     `
   }
+  if (!loggedIn) emit('url', '/auth/sign-in')
 
   return pug`
-    Layout
-      SmartSidebar.sidebar(
-        path=$opened.path()
-        renderContent=renderSidebar
-      )
-        Row.menu
-          Button(color='secondaryText' icon=faBars onPress=() => $opened.set(!opened))
-          H1.logo= APP_NAME
+    if !role
+      RoleSelect
+    else
+      Layout
+        SmartSidebar.sidebar(
+          path=$opened.path()
+          renderContent=renderSidebar
+        )
+          Row.menu
+            Button(color='secondaryText' icon=faBars onPress=() => $opened.set(!opened))
+            H1.logo= APP_NAME
 
-        Div.body= children
+          Div.body= children
   `
 })
