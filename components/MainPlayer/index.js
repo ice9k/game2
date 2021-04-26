@@ -1,37 +1,34 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
   observer,
-  useQueryDoc,
   useSession,
   $root,
   useQuery,
   emit
 } from 'startupjs'
-import axios from 'axios'
-import './index.styl'
-import { Div, Span, Button, Br, Row, Card, Input, Checkbox, TextInput, Pagination } from '@startupjs/ui'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { Div, Span, Button, Pagination } from '@startupjs/ui'
 
 export default observer(function MainPlayer ({ style }) {
-  const limit=10
+  const limit = 10
   const [skip, setSkip] = useState(0)
-  const [sessionUser, $sessionUser] = useSession('user')
-  const [games, $games] = useQuery('games', {
+  const [sessionUser] = useSession('user')
+
+  const query = {
     $or: [
-      { usersByRoles: { $exists: true }},
+      { usersByRoles: { $exists: true } },
       { userIds: sessionUser.id }
     ],
-    finished: { $ne: true },
+    finished: { $ne: true }
+  }
+
+  const [games] = useQuery('games', {
+    ...query,
     $skip: skip,
     $limit: limit
   })
 
   const [gamesCount] = useQuery('games', {
-    $or: [
-      { usersByRoles: { $exists: true }},
-      { userIds: sessionUser.id }
-    ],
-    finished: { $ne: true },
+    ...query,
     $count: true
   })
 
@@ -43,8 +40,7 @@ export default observer(function MainPlayer ({ style }) {
     await $game.set('nextPlayerRoleIndex', (nextPlayerRoleIndex + 1) % roles.length)
     emit('url', `/game/${id}`)
   }
-  
-  const onChangeText = val => $gameName(val)
+
   return pug`
     Div
       Span Available games

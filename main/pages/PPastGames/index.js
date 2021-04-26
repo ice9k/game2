@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
-import { observer, useLocal, useDoc, useQuery, useSession } from 'startupjs'
-import { ScrollView } from 'react-native'
-import { TestComponent, GameHistory } from 'components'
-import './index.styl'
+import { observer, useQuery, useSession } from 'startupjs'
+import { Div, Span, Pagination } from '@startupjs/ui'
 import moment from 'moment-timezone'
-import { Content, Div, Button, Span, Collapse, Pagination, Row } from '@startupjs/ui'
-import _ from 'lodash'
+import { GameHistory } from 'components'
 
 export default observer(function PPastGames () {
   const limit = 10
@@ -13,22 +10,22 @@ export default observer(function PPastGames () {
   const [user] = useSession('user')
   const userId = user.id
 
-  const [games, $games] = useQuery('games', {
+  const query = {
     $or: [
       { userId },
       { userIds: userId }
     ],
-    finished: true,
+    finished: true
+  }
+
+  const [games] = useQuery('games', {
+    ...query,
     $skip: skip,
     $limit: limit
   })
 
   const [gamesCount] = useQuery('games', {
-    $or: [
-      { userId },
-      { userIds: userId }
-    ],
-    finished: true,
+    ...query,
     $count: true
   })
   return pug`

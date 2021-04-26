@@ -6,10 +6,9 @@ import {
   useSession,
   emit
 } from 'startupjs'
+import { Row, Span, Button, Div } from '@startupjs/ui'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { Row, Span, Button, Link, Div } from '@startupjs/ui'
 import './index.styl'
-import { EventEmitter } from 'react-native'
 
 export default observer(function LibraryCard ({ templateId, style }) {
   const [template, $template] = useDoc('templates', templateId)
@@ -21,8 +20,8 @@ export default observer(function LibraryCard ({ templateId, style }) {
     await $root.add('rounds', { id: roundId, roundIndex: 0, gameId })
     const data = {
       ...$template.getDeepCopy(),
-      userId, 
-      id: gameId, 
+      userId,
+      id: gameId,
       rounds: [roundId],
       usersByRoles: {},
       createdAt: Date.now()

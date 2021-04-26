@@ -6,10 +6,9 @@ import {
   $root,
   emit
 } from 'startupjs'
-import './index.styl'
-import { Div, Button, Row, Card } from '@startupjs/ui'
+import { Div, Button } from '@startupjs/ui'
 import { TemplateForm } from 'components'
-  
+
 export default observer(function PCreateTemplate ({ style }) {
   const [userId] = useSession('userId')
   const [data, $data] = useValue({})

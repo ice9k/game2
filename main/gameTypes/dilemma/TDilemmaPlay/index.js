@@ -1,8 +1,6 @@
 import React from 'react'
 import { observer, useDoc, useQueryDoc, useSession } from 'startupjs'
-import { TextInput, NumberInput, Br, Span, Row, Button                                                                                                           } from '@startupjs/ui'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
-import { RoleSelect } from 'components'
+import { Br, Span, Row, Button } from '@startupjs/ui'
 import _ from 'lodash'
 
 export default observer(function ({ gameId }) {
@@ -15,9 +13,9 @@ export default observer(function ({ gameId }) {
   })
 
   const { rounds } = game
-  const roundId = rounds[rounds.length-1]
+  const roundId = rounds[rounds.length - 1]
   const [currentRound, $currentRound] = useDoc('rounds', roundId)
-  const previousRoundId = rounds[rounds.length-2]
+  const previousRoundId = rounds[rounds.length - 2]
   const [previousRound] = useDoc('rounds', previousRoundId)
 
   const enemyId = group.userIds.find(id => id !== userId)
@@ -33,16 +31,16 @@ export default observer(function ({ gameId }) {
       const enemyPoints = question[enemyString]
 
       $currentRound.setEach({
-        [userId] : {
+        [userId]: {
           answer: option,
           roundPoints: points,
           totalPoints: _.get(previousRound, `${userId}.totalPoints`, 0) + points
         },
-        [enemyId] : {
+        [enemyId]: {
           answer: enemyPlayerAnswer,
           roundPoints: enemyPoints,
           totalPoints: _.get(previousRound, `${enemyId}.totalPoints`, 0) + enemyPoints
-        },
+        }
       })
     } else {
       $currentRound.setEach({
@@ -54,7 +52,7 @@ export default observer(function ({ gameId }) {
   function onButton1Press () {
     onButtonPress('F')
   }
-  
+
   function onButton2Press () {
     onButtonPress('S')
   }

@@ -1,11 +1,8 @@
 import React from 'react'
-import { observer, emit, useValue, useLocal, useSession} from 'startupjs'
+import { observer } from 'startupjs'
 import { TextInput, NumberInput, Br, Span, Select } from '@startupjs/ui'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
-import { RoleSelect } from 'components'
 
 export default observer(function ({ data, $data }) {
-
   const { questions = [] } = data
 
   return pug`

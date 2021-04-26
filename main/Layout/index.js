@@ -1,10 +1,10 @@
 import React from 'react'
-import { observer, emit, useValue, useLocal, useSession} from 'startupjs'
+import { observer, emit, useValue, useLocal, useSession } from 'startupjs'
 import './index.styl'
 import { Row, Div, Layout, SmartSidebar, Menu, Button, H1 } from '@startupjs/ui'
+import { LogoutButton } from '@startupjs/auth'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { RoleSelect } from 'components'
-import { LogoutButton } from '@startupjs/auth'
 import APP from '../../app.json'
 
 const { displayName } = APP
@@ -38,18 +38,19 @@ export default observer(function ({ children }) {
   }
   if (!loggedIn) emit('url', '/auth/sign-in')
 
-  if (!role) return pug`RoleSelect`
-
   return pug`
-    Layout
-      SmartSidebar.sidebar(
-        path=$opened.path()
-        renderContent=renderSidebar
-      )
-        Row.menu
-          Button(color='secondaryText' icon=faBars onPress=() => $opened.set(!opened))
-          H1.logo= APP_NAME
+    if !role
+      RoleSelect
+    else
+      Layout
+        SmartSidebar.sidebar(
+          path=$opened.path()
+          renderContent=renderSidebar
+        )
+          Row.menu
+            Button(color='secondaryText' icon=faBars onPress=() => $opened.set(!opened))
+            H1.logo= APP_NAME
 
-        Div.body= children
+          Div.body= children
   `
 })

@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react'
-import { observer, useLocal, useDoc, $root, useQuery, useQueryIds } from 'startupjs'
 import { ScrollView } from 'react-native'
-import { TestComponent, GameHistory } from 'components'
-import './index.styl'
-import { Content, Div, Button, Span, Row } from '@startupjs/ui'
+import { observer, useLocal, useDoc, $root, useQuery, useQueryIds } from 'startupjs'
+import { Div, Button, Span, Row } from '@startupjs/ui'
 import _ from 'lodash'
+import { GameHistory } from 'components'
 
 export default observer(function ProfessorsView () {
   const [gameId] = useLocal('$render.params.id')
@@ -13,27 +12,24 @@ export default observer(function ProfessorsView () {
   const [users] = useQueryIds('users',
     game.userIds
   )
-  const roundId = rounds[rounds.length-1]
+  const roundId = rounds[rounds.length - 1]
   const [currentRound, $currentRound] = useDoc('rounds', roundId)
-  const previousRoundId = rounds[rounds.length-2]
+  const previousRoundId = rounds[rounds.length - 2]
   const [previousRound] = useDoc('rounds', previousRoundId)
   const [groups] = useQuery('groups', {
-    gameId,
-  })
-  const allRounds = useQuery('rounds', {
-    gameId,
+    gameId
   })
 
-  const onNextRoundPress = async() => {
+  const onNextRoundPress = async () => {
     $currentRound.set('finished', true)
     if (game.roundCount === game.rounds.length) {
-      $game.setEach({ finished: true, finishedAt: Date.now()})
+      $game.setEach({ finished: true, finishedAt: Date.now() })
     } else {
       const roundId = $root.id()
       await $root.add('rounds', {
         gameId,
         id: roundId,
-        roundIndex: game.rounds.length,
+        roundIndex: game.rounds.length
       })
       await $game.push('rounds', roundId)
     }
@@ -49,9 +45,9 @@ export default observer(function ProfessorsView () {
     })
     const promises = []
     let allUsers = []
-    for(let i=0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
       let chatId = $root.id()
-      let group = { userIds: [], gameId, id: $root.id(), chatId}
+      let group = { userIds: [], gameId, id: $root.id(), chatId }
       Object.keys(slicedArrays).forEach(role => {
         const userId = slicedArrays[role][i]
         group[userId] = role
@@ -59,7 +55,7 @@ export default observer(function ProfessorsView () {
         allUsers.push(userId)
       })
       promises.push($root.add('groups', group))
-      promises.push($root.scope('chats').addNew('group', { id: chatId, scope: 'group', userIds: group.userIds}))
+      promises.push($root.scope('chats').addNew('group', { id: chatId, scope: 'group', userIds: group.userIds }))
     }
     promises.push($game.del('nextPlayerRoleIndex'))
     promises.push($game.set('userIds', allUsers))
@@ -68,10 +64,9 @@ export default observer(function ProfessorsView () {
     await $game.del('usersByRoles')
   }
 
-
   const usersMemo = useMemo(() => {
     let userObj = {}
-    users.forEach(user => userObj[user.id] = user)
+    users.forEach(user => { userObj[user.id] = user })
     return userObj
   }, [JSON.stringify(users)])
 
@@ -85,7 +80,6 @@ export default observer(function ProfessorsView () {
         GameHistory(gameId=gameId)
         if game.finished
           Span Game finished
-          Span= getWinnerString(game)
         else 
           Span= 'Round' + rounds.length
           Button(onPress=onNextRoundPress)= game.roundCount === game.rounds.length? 'Finish game' : 'Next round'

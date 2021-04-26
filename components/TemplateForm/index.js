@@ -1,36 +1,29 @@
 import React from 'react'
 import {
-  observer,
-  useSession,
-  emit,
-  useQuery
+  observer
 } from 'startupjs'
 import types, { selectOptions } from 'main/gameTypes'
-// import './index.styl'
+import './index.styl'
 import { Div, Button, Row, Br, TextInput, Span, NumberInput, Select } from '@startupjs/ui'
-import { faPlus, faTimesCircle, faTimes } from '@fortawesome/free-solid-svg-icons'
-  
-export default observer(function TemplateForm ({ data, $data }) {
-  const [userId] = useSession('userId')
+import { faPlus, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
+export default observer(function TemplateForm ({ data, $data }) {
   const addRole = () => {
     if (!data.roles || (data.roles[data.roles.length - 1] !== '')) {
       $data.push('roles', '')
     }
   }
 
-  const Template = (types[data.type] || {}).edit 
+  const Template = (types[data.type] || {}).edit
 
   return pug`
     Div
-      Br(half)
-      TextInput(
+      TextInput.margin(
         label='Name'
         value=data.name
         onChangeText=text => $data.set('name', text)
       )
-      Br(half)
-      TextInput(
+      TextInput.margin(
         label='Description'
         value=data.description
         onChangeText=text => $data.set('description', text)

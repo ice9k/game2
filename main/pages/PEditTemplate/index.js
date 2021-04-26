@@ -4,10 +4,9 @@ import {
   useLocal,
   useDoc
 } from 'startupjs'
-import './index.styl'
 import { Div } from '@startupjs/ui'
 import { TemplateForm } from 'components'
-  
+
 export default observer(function PEditTemplate ({ style }) {
   const [id] = useLocal('$render.params.id')
   const [data, $data] = useDoc('templates', id)

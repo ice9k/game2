@@ -1,17 +1,18 @@
 $cardBackground = $UI.colors.white
 
 .root
-  height 216px
+  height 27u
   background-color $cardBackground
-  border-radius 4px
-  flex-basis 300px
+  radius()
+  flex-basis 38u
   overflow hidden
+  flex-grow 1
 
-  +to($UI.media.mobile)
-    flex-grow 1
+  +tablet()
+    flex-grow 0
 
 .header
-  height 4.5u
+  height 5u
   padding 0 2u
 
 .headerText
