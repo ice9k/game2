@@ -1,25 +1,19 @@
 import React from 'react'
 import {
   observer,
-  useSession,
   useValue,
-  $root,
-  emit
+  emit,
+  useModel
 } from 'startupjs'
 import { Div, Button } from '@startupjs/ui'
 import { TemplateForm } from 'components'
 
 export default observer(function PCreateTemplate ({ style }) {
-  const [userId] = useSession('userId')
   const [data, $data] = useValue({})
+  const $templates = useModel('templates')
 
   async function create () {
-    await $root.add('templates', {
-      ...data,
-      userId,
-      createdAt: Date.now(),
-      id: $root.id()
-    })
+    await $templates.addNew(data)
     emit('url', '/library')
   }
 

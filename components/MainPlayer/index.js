@@ -34,10 +34,7 @@ export default observer(function MainPlayer ({ style }) {
 
   const onJoinGame = async id => {
     const $game = $root.scope(`games.${id}`)
-    const { nextPlayerRoleIndex = 0, roles } = $game.get()
-    const role = roles[nextPlayerRoleIndex]
-    await $game.push('usersByRoles.' + role, sessionUser.id)
-    await $game.set('nextPlayerRoleIndex', (nextPlayerRoleIndex + 1) % roles.length)
+    await $game.joinUser(sessionUser.id)
     emit('url', `/game/${id}`)
   }
 
