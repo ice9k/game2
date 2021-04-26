@@ -38,11 +38,12 @@ export default observer(function PPastGames () {
           Span= 'Started at: ' + moment(game.startedAt).format('DD MM YYYY, HH:mm')
           Span= 'Finished at: ' + moment(game.finishedAt).format('DD MM YYYY, HH:mm')
           GameHistory(gameId=game.id)
-      Pagination(
-        count=gamesCount
-        limit=limit
-        skip=skip
-        onChangePage=val => setSkip(val * limit)
-      )
+      if gamesCount
+        Pagination(
+          count=gamesCount
+          limit=limit
+          skip=skip
+          onChangePage=val => setSkip(val * limit)
+        )
   `
 })

@@ -52,11 +52,12 @@ export default observer(function GameHistory ({ gameId }) {
                   Span= 'Answer: ' + _.get(round, userId+'.answer', 'No answer')
                   Span= _.get(round, userId+'.totalPoints', 0) + ' points earned'
                   Span= _.get(round, userId+'.totalPoints', 0) + ' total points'
-      Pagination(
-        count=roundsCount
-        limit=limit
-        skip=skip
-        onChangePage=val => setSkip(val * limit)
-      )
+      if roundsCount
+        Pagination(
+          count=roundsCount
+          limit=limit
+          skip=skip
+          onChangePage=val => setSkip(val * limit)
+        )
   `
 })
