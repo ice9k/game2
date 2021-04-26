@@ -5,7 +5,7 @@ import {
   emit,
   useModel
 } from 'startupjs'
-import { Div, Button } from '@startupjs/ui'
+import { Div, Button, Br } from '@startupjs/ui'
 import { TemplateForm } from 'components'
 
 export default observer(function PCreateTemplate ({ style }) {
@@ -20,6 +20,7 @@ export default observer(function PCreateTemplate ({ style }) {
   return pug`
     Div
       TemplateForm(data=data $data=$data)
+      Br(half)
       Button(onPress=create) Create
   `
 })

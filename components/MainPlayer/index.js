@@ -45,11 +45,12 @@ export default observer(function MainPlayer ({ style }) {
         Div(key=game.id)
           Span= game.name
           Button(onPress=() => onJoinGame(game.id) ) Join
-      Pagination(
-        count=gamesCount
-        limit=limit
-        skip=skip
-        onChangePage=val => setSkip(val * limit)
-      )
+      if gamesCount
+        Pagination(
+          count=gamesCount
+          limit=limit
+          skip=skip
+          onChangePage=val => setSkip(val * limit)
+        )
   `
 })
